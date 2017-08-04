@@ -4,14 +4,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.lang.*;
 
 
 public class fileprocess {
-	int[][] dataFormatS= {{0,1},{2,3},{20,24},{25,27},{49,56},{59,66}};
-	int[][] dataFormatR= {{0,1},{2,3},{20,24},{25,27},{49,56},{59,66}};
+	int[][] dataFormat= {{0,1},{2,3},{20,24},{25,27},{49,56},{59,66}};
 	BufferedReader reader = null;
-	List<List<String>> res= null;
+	List<List<String>> res= new ArrayList<List<String>>();
 	public List<List<String>> sfilein(String filename) {
 		File sfile = new File(filename);
 		try {
@@ -19,7 +17,7 @@ public class fileprocess {
 		String tempString = null;
 		int line =1;
 		while((tempString = reader.readLine())!=null) {			
-			List<String> temp = null;
+			List<String> temp = new ArrayList<String>();
 			String filetype = tempString.substring(0, 1);
 			String lineNo = tempString.substring(2,3);
 			String pointNo = tempString.substring(19,24);
