@@ -6,36 +6,37 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
-import javax.json;
+import org.json.*;
 
 
 
 public class preparejson {	
-	public static void prepareJonObject(List<List<String>> ls) {
+	public void prepareJonObject(List<List<String>> ls) {
 		for(int i = 0;i<ls.size();i++) {
-			List<String> temp = (List<String>) ls.get(i);			
-			for(int j=0;j<5;j++) {
+			List<String> temp = (List<String>) ls.get(i);
+			buildJson(temp);
 				
-				}
 			}
 	}
 
-	private String buildJson(String[] str) {
-		if(str.length<5) {
+	private String buildJson(List<String> str) {
+		if(str.size()<5) {
 			System.out.println("Error:Json need at lest 5 param!");
 			return null;
 		}
 		Map map = new HashMap();
-		map.put("SLine", str[0]);
-		map.put("SPoint",str[1]);
-		map.put("SPoint",str[2]);
-		map.put("SPoint",str[3]);
-		map.put("SPoint",str[4]);
-		JSONObject jsonobject = JSONObject.fromObject(map);
-		return map;
+		map.put("SLine", str.get(0));
+		map.put("SPoint",str.get(1));
+		map.put("SPoint",str.get(2));
+		map.put("SPoint",str.get(3));
+		map.put("SPoint",str.get(4));
+		JSONArray jsonArray = new JSONArray();
+		JSONObject jsonObject = new JSONObject();
+		jsonArray.put(map);
+		jsonObject.put("S",jsonArray);
+		System.out.println(jsonObject.toString());
+		return null;
 		}
-		
-	
 } 
 
 
