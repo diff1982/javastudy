@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.List;
 
 class httptest{
-	public static String sendGet(String url,String param) {
+	public static String httptest(String url,String param) {
 		String result="";
 		BufferedReader in= null;
 		try {

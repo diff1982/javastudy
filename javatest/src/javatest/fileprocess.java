@@ -19,15 +19,17 @@ public class fileprocess {
 		while((tempString = reader.readLine())!=null) {			
 			List<String> temp = new ArrayList<String>();
 			String filetype = tempString.substring(0, 1);
-			String lineNo = tempString.substring(2,3);
-			String pointNo = tempString.substring(19,24);
+			String lineNo = tempString.substring(1,5);
+			String pointNo = tempString.substring(22,26);
 			String xCodinate = tempString.substring(48,56);
-			String yCodinate = tempString.substring(58,66);
+			String yCodinate = tempString.substring(57,66);
+			String zCodinate = tempString.substring(68,72);
 			temp.add(filetype);
 			temp.add(lineNo);
 			temp.add(pointNo);
 			temp.add(xCodinate);
 			temp.add(yCodinate);
+			temp.add(zCodinate);
 			res.add(temp);
 			}
 		}
