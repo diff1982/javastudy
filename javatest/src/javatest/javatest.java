@@ -59,6 +59,8 @@ public class javatest {
 		//设定验证请求url
 		String authenticationServerUrl = config
 		        .getProperty(OAuthConfig.AUTHENTICATION_SERVER_URL);
+		//flag控制是否使用代理服务器 true为使用，flase为不使用	
+		boolean flag = false;
 		
 		//输入数据有效性验证
 		if (!OAuthUtils.isValid(username)
@@ -74,7 +76,7 @@ public class javatest {
 			//Only retrieve the access token
 			System.out.println("Retrieving Access Token");
 			TokenInfo oauthDetails = OAuthUtils.createOAuthDetails(config);
-			String accessToken = OAuthUtils.getAccessToken(oauthDetails);
+			String accessToken = OAuthUtils.getAccessToken(oauthDetails,flag);
 			System.out
 			.println("Successfully retrieved Access token for Password Grant:" + accessToken);
 			}
@@ -83,7 +85,7 @@ public class javatest {
 			//Urlencoded or xml
 			System.out.println("Resource endpoint url:" + resourceServerUrl);
 			System.out.println("Attempting to retrieve protected resource");
-			OAuthUtils.getProtectedResource(config);
+			OAuthUtils.getProtectedResource(config,flag);
 			     }
 	}
 

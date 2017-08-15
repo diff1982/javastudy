@@ -21,6 +21,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.ParseException;
@@ -29,6 +30,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
@@ -79,8 +81,10 @@ public class OAuthUtils {
 	}
 	
 	//获取受Token保护的资源方法
-	public static void getProtectedResource(Properties config) {
+	public static void getProtectedResource(Properties config,boolean flag) {
+		//flag控制是否使用代理服务器 true为使用，flase为不使用		
 		//获取资源服务器认证URL
+		DefaultHttpClient client ;
 		String resourceURL = config
 				.getProperty(OAuthConfig.RESOURCE_SERVER_URL);
 		
@@ -98,7 +102,14 @@ public class OAuthUtils {
 						.getAccessToken()));
 		
 		//创建java httpclient对象，默认参数为空
-		DefaultHttpClient client = new DefaultHttpClient();
+		//判断flag是否使用代理设置
+		if(flag) {
+			HttpHost proxy = new HttpHost("proxy3.bj.petrochina", 8080); 
+			client  = new DefaultHttpClient();  
+			client .getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
+		}else {
+			client  = new DefaultHttpClient();  
+		}
 		//初始化服务端响应信息对象
 		HttpResponse response = null;
 		//初始化服务端响应码
@@ -121,7 +132,7 @@ public class OAuthUtils {
 				System.out
 						.println("Access token is invalid or expired. Regenerating access token....");
 				//执行getAccessToken 获取token
-				String accessToken = getAccessToken(oauthDetails);
+				String accessToken = getAccessToken(oauthDetails,flag);
 				
 				
 				//判定token是否有效
@@ -172,8 +183,10 @@ public class OAuthUtils {
 	
 	
 	//获取Token
-	public static String getAccessToken(TokenInfo oauthDetails) {
+	public static String getAccessToken(TokenInfo oauthDetails,boolean flag) {
+		//flag控制是否使用代理服务器 true为使用，flase为不使用	
 		//获得认证服务器认证url
+		DefaultHttpClient client;
 		HttpPost post = new HttpPost(oauthDetails.getAuthenticationServerUrl());
 		
 		String clientId = oauthDetails.getClientId();
@@ -205,8 +218,14 @@ public class OAuthUtils {
 					scope));
 		}
 
-		//初始化httpclient,httpresponse对象，以及准备accessToken存储对象。 
-		DefaultHttpClient client = new DefaultHttpClient();
+		//初始化httpclient,httpresponse对象，以及准备accessToken存储对象。
+		if(flag) {
+			HttpHost proxy = new HttpHost("proxy3.bj.petrochina", 8080); 
+			client = new DefaultHttpClient();  
+			client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
+		}else {
+			client = new DefaultHttpClient();  
+		}
 		HttpResponse response = null;
 		String accessToken = null;
 		try {
